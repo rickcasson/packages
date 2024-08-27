@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:camera_avfoundation/camera_avfoundation.dart';
 import 'package:camera_platform_interface/camera_platform_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,11 +66,11 @@ class AVFoundationCamera extends CameraPlatform {
           .where((CameraEvent event) => event.cameraId == cameraId);
 
   @override
-  Future<List<CameraDescription>> availableCameras() async {
+  Future<List<AVCameraDescription>> availableCameras() async {
     try {
       return (await _hostApi.getAvailableCameras())
           // See comment in messages.dart for why this is safe.
-          .map((PlatformCameraDescription? c) => c!)
+          .map((PlatformAVCameraDescription? c) => c!)
           .map(cameraDescriptionFromPlatform)
           .toList();
     } on PlatformException catch (e) {

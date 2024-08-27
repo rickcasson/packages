@@ -29,6 +29,39 @@ enum PlatformCameraLensDirection {
   external,
 }
 
+// Pigeon version of AVCaptureDeviceType.
+enum PlatformAVCaptureDeviceType {
+  /// A built-in wide-angle camera device type.
+  builtInWideAngleCamera,
+
+  /// A built-in camera device type with a shorter focal length than a wide-angle camera.
+  builtInUltraWideCamera,
+
+  /// A built-in camera device type with a longer focal length than a wide-angle camera.
+  builtInTelephotoCamera,
+
+  /// A built-in camera device type that consists of a wide-angle and telephoto camera.
+  builtInDualCamera,
+
+  /// A built-in camera device type that consists of two cameras of fixed focal length, one ultrawide angle and one wide angle.
+  builtInDualWideCamera,
+
+  /// A built-in camera device type that consists of three cameras of fixed focal length, one ultrawide angle, one wide angle, and one telephoto.
+  builtInTripleCamera,
+
+  /// A Continuity Camera device type.
+  continuityCamera,
+
+  /// An external device type.
+  external,
+
+  /// A device that consists of two cameras, one LiDAR and one YUV.
+  builtInLiDARDepthCamera,
+
+  /// A device that consists of two cameras, one Infrared and one YUV.
+  builtInTrueDepthCamera,
+}
+
 // Pigeon version of DeviceOrientation.
 enum PlatformDeviceOrientation {
   portraitUp,
@@ -79,11 +112,12 @@ enum PlatformResolutionPreset {
   max,
 }
 
-// Pigeon version of CameraDescription.
-class PlatformCameraDescription {
-  PlatformCameraDescription({
+// Pigeon version of AVCameraDescription.
+class PlatformAVCameraDescription {
+  PlatformAVCameraDescription({
     required this.name,
     required this.lensDirection,
+    required this.captureDeviceType,
   });
 
   /// The name of the camera device.
@@ -91,6 +125,9 @@ class PlatformCameraDescription {
 
   /// The direction the camera is facing.
   final PlatformCameraLensDirection lensDirection;
+
+  /// The type of the capture device on Apple devices.
+  final PlatformAVCaptureDeviceType captureDeviceType;
 }
 
 // Pigeon version of the data needed for a CameraInitializedEvent.
@@ -160,7 +197,7 @@ abstract class CameraApi {
   // The consuming code treats it as non-nullable.
   @async
   @ObjCSelector('availableCamerasWithCompletion')
-  List<PlatformCameraDescription?> getAvailableCameras();
+  List<PlatformAVCameraDescription?> getAvailableCameras();
 
   /// Create a new camera with the given settings, and returns its ID.
   @async

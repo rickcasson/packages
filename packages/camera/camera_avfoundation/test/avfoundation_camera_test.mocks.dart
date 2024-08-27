@@ -27,18 +27,18 @@ import 'package:mockito/src/dummies.dart' as _i4;
 /// See the documentation for Mockito's code generation for more information.
 class MockCameraApi extends _i1.Mock implements _i2.CameraApi {
   @override
-  _i3.Future<List<_i2.PlatformCameraDescription?>> getAvailableCameras() =>
+  _i3.Future<List<_i2.PlatformAVCameraDescription?>> getAvailableCameras() =>
       (super.noSuchMethod(
         Invocation.method(
           #getAvailableCameras,
           [],
         ),
-        returnValue: _i3.Future<List<_i2.PlatformCameraDescription?>>.value(
-            <_i2.PlatformCameraDescription?>[]),
+        returnValue: _i3.Future<List<_i2.PlatformAVCameraDescription?>>.value(
+            <_i2.PlatformAVCameraDescription?>[]),
         returnValueForMissingStub:
-            _i3.Future<List<_i2.PlatformCameraDescription?>>.value(
-                <_i2.PlatformCameraDescription?>[]),
-      ) as _i3.Future<List<_i2.PlatformCameraDescription?>>);
+            _i3.Future<List<_i2.PlatformAVCameraDescription?>>.value(
+                <_i2.PlatformAVCameraDescription?>[]),
+      ) as _i3.Future<List<_i2.PlatformAVCameraDescription?>>);
 
   @override
   _i3.Future<int> create(

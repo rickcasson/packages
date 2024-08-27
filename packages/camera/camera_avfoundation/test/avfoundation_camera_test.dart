@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:async/async.dart';
-import 'package:camera_avfoundation/src/avfoundation_camera.dart';
+import 'package:camera_avfoundation/camera_avfoundation.dart';
 import 'package:camera_avfoundation/src/messages.g.dart';
 import 'package:camera_avfoundation/src/utils.dart';
 import 'package:camera_platform_interface/camera_platform_interface.dart';
@@ -369,16 +369,21 @@ void main() {
 
     test('Should fetch CameraDescription instances for available cameras',
         () async {
-      final List<PlatformCameraDescription> returnData =
-          <PlatformCameraDescription>[
-        PlatformCameraDescription(
-            name: 'Test 1', lensDirection: PlatformCameraLensDirection.front),
-        PlatformCameraDescription(
-            name: 'Test 2', lensDirection: PlatformCameraLensDirection.back),
+      final List<PlatformAVCameraDescription> returnData =
+          <PlatformAVCameraDescription>[
+        PlatformAVCameraDescription(
+            name: 'Test 1',
+            lensDirection: PlatformCameraLensDirection.front,
+            captureDeviceType:
+                PlatformAVCaptureDeviceType.builtInWideAngleCamera),
+        PlatformAVCameraDescription(
+            name: 'Test 2',
+            lensDirection: PlatformCameraLensDirection.back,
+            captureDeviceType: PlatformAVCaptureDeviceType.builtInDualCamera),
       ];
       when(mockApi.getAvailableCameras()).thenAnswer((_) async => returnData);
 
-      final List<CameraDescription> cameras = await camera.availableCameras();
+      final List<AVCameraDescription> cameras = await camera.availableCameras();
 
       expect(cameras.length, returnData.length);
       for (int i = 0; i < returnData.length; i++) {
@@ -387,6 +392,8 @@ void main() {
             cameraLensDirectionFromPlatform(returnData[i].lensDirection));
         // This value isn't provided by the platform, so is hard-coded to 90.
         expect(cameras[i].sensorOrientation, 90);
+        expect(cameras[i].captureDeviceType,
+            captureDeviceTypeFromPlatform(returnData[i].captureDeviceType));
       }
     });
 

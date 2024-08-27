@@ -2,18 +2,21 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:camera_avfoundation/camera_avfoundation.dart';
 import 'package:camera_platform_interface/camera_platform_interface.dart';
 import 'package:flutter/services.dart';
 
 import 'messages.g.dart';
 
-/// Creates a [CameraDescription] from a Pigeon [PlatformCameraDescription].
-CameraDescription cameraDescriptionFromPlatform(
-    PlatformCameraDescription camera) {
-  return CameraDescription(
-      name: camera.name,
-      lensDirection: cameraLensDirectionFromPlatform(camera.lensDirection),
-      sensorOrientation: 90);
+/// Creates a [AVCameraDescription] from a Pigeon [PlatformCameraDescription].
+AVCameraDescription cameraDescriptionFromPlatform(
+    PlatformAVCameraDescription camera) {
+  return AVCameraDescription(
+    name: camera.name,
+    lensDirection: cameraLensDirectionFromPlatform(camera.lensDirection),
+    sensorOrientation: 90,
+    captureDeviceType: captureDeviceTypeFromPlatform(camera.captureDeviceType),
+  );
 }
 
 /// Converts a Pigeon [PlatformCameraLensDirection] to a [CameraLensDirection].
@@ -23,6 +26,32 @@ CameraLensDirection cameraLensDirectionFromPlatform(
     PlatformCameraLensDirection.front => CameraLensDirection.front,
     PlatformCameraLensDirection.back => CameraLensDirection.back,
     PlatformCameraLensDirection.external => CameraLensDirection.external,
+  };
+}
+
+/// Coverts a Pigeon [PlatformAVCaptureDeviceType] to a [AVCaptureDeviceType].
+AVCaptureDeviceType captureDeviceTypeFromPlatform(
+    PlatformAVCaptureDeviceType type) {
+  return switch (type) {
+    PlatformAVCaptureDeviceType.builtInWideAngleCamera =>
+      AVCaptureDeviceType.builtInWideAngleCamera,
+    PlatformAVCaptureDeviceType.builtInUltraWideCamera =>
+      AVCaptureDeviceType.builtInUltraWideCamera,
+    PlatformAVCaptureDeviceType.builtInTelephotoCamera =>
+      AVCaptureDeviceType.builtInTelephotoCamera,
+    PlatformAVCaptureDeviceType.builtInDualCamera =>
+      AVCaptureDeviceType.builtInDualCamera,
+    PlatformAVCaptureDeviceType.builtInTripleCamera =>
+      AVCaptureDeviceType.builtInTripleCamera,
+    PlatformAVCaptureDeviceType.builtInTrueDepthCamera =>
+      AVCaptureDeviceType.builtInTrueDepthCamera,
+    PlatformAVCaptureDeviceType.builtInDualWideCamera =>
+      AVCaptureDeviceType.builtInDualWideCamera,
+    PlatformAVCaptureDeviceType.continuityCamera =>
+      AVCaptureDeviceType.continuityCamera,
+    PlatformAVCaptureDeviceType.external => AVCaptureDeviceType.external,
+    PlatformAVCaptureDeviceType.builtInLiDARDepthCamera =>
+      AVCaptureDeviceType.builtInLiDARDepthCamera,
   };
 }
 

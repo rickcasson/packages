@@ -105,11 +105,44 @@ static FlutterError *FlutterErrorFromNSError(NSError *error) {
     (nonnull void (^)(NSArray<FCPPlatformCameraDescription *> *_Nullable,
                       FlutterError *_Nullable))completion {
   dispatch_async(self.captureSessionQueue, ^{
-    NSMutableArray *discoveryDevices =
-        [@[ AVCaptureDeviceTypeBuiltInWideAngleCamera, AVCaptureDeviceTypeBuiltInTelephotoCamera ]
-            mutableCopy];
-    if (@available(iOS 13.0, *)) {
-      [discoveryDevices addObject:AVCaptureDeviceTypeBuiltInUltraWideCamera];
+      NSMutableArray *discoveryDevices = [NSMutableArray new];
+      if (@available(iOS 17.0, *)) {
+        [discoveryDevices addObjectsFromArray:
+          @[ AVCaptureDeviceTypeBuiltInWideAngleCamera,
+             AVCaptureDeviceTypeBuiltInTelephotoCamera,
+             AVCaptureDeviceTypeBuiltInUltraWideCamera,
+             AVCaptureDeviceTypeExternal,
+             AVCaptureDeviceTypeBuiltInDualCamera,
+             AVCaptureDeviceTypeBuiltInTrueDepthCamera,
+             AVCaptureDeviceTypeBuiltInDualWideCamera,
+             AVCaptureDeviceTypeBuiltInTripleCamera,
+             AVCaptureDeviceTypeBuiltInLiDARDepthCamera,
+             AVCaptureDeviceTypeContinuityCamera ]];
+      } else if (@available(iOS 15.4, *)) {
+        [discoveryDevices addObjectsFromArray:
+          @[ AVCaptureDeviceTypeBuiltInWideAngleCamera,
+             AVCaptureDeviceTypeBuiltInTelephotoCamera,
+             AVCaptureDeviceTypeBuiltInUltraWideCamera,
+             AVCaptureDeviceTypeBuiltInDualCamera,
+             AVCaptureDeviceTypeBuiltInTrueDepthCamera,
+             AVCaptureDeviceTypeBuiltInDualWideCamera,
+             AVCaptureDeviceTypeBuiltInTripleCamera,
+             AVCaptureDeviceTypeBuiltInLiDARDepthCamera ]];
+      } else if (@available(iOS 13.0, *)) {
+        [discoveryDevices addObjectsFromArray:
+          @[ AVCaptureDeviceTypeBuiltInWideAngleCamera,
+             AVCaptureDeviceTypeBuiltInTelephotoCamera,
+             AVCaptureDeviceTypeBuiltInUltraWideCamera,
+             AVCaptureDeviceTypeBuiltInDualCamera,
+             AVCaptureDeviceTypeBuiltInTrueDepthCamera,
+             AVCaptureDeviceTypeBuiltInDualWideCamera,
+             AVCaptureDeviceTypeBuiltInTripleCamera ]];
+      } else {
+        [discoveryDevices addObjectsFromArray:
+          @[ AVCaptureDeviceTypeBuiltInWideAngleCamera,
+             AVCaptureDeviceTypeBuiltInTelephotoCamera,
+             AVCaptureDeviceTypeBuiltInDualCamera,
+             AVCaptureDeviceTypeBuiltInTrueDepthCamera ]];
     }
     AVCaptureDeviceDiscoverySession *discoverySession = [AVCaptureDeviceDiscoverySession
         discoverySessionWithDeviceTypes:discoveryDevices
@@ -131,8 +164,37 @@ static FlutterError *FlutterErrorFromNSError(NSError *error) {
           lensFacing = FCPPlatformCameraLensDirectionExternal;
           break;
       }
-      [reply addObject:[FCPPlatformCameraDescription makeWithName:device.uniqueID
-                                                    lensDirection:lensFacing]];
+      FCPPlatformAVCaptureDeviceType *deviceType;
+      if ([device deviceType] == AVCaptureDeviceTypeBuiltInWideAngleCamera) {
+        deviceType = FCPPlatformAVCaptureDeviceTypeBuiltInWideAngleCamera;
+      } else if ([device deviceType] == AVCaptureDeviceTypeBuiltInTelephotoCamera) {
+        deviceType = FCPPlatformAVCaptureDeviceTypeBuiltInTelephotoCamera;
+      } else if ([device deviceType] == AVCaptureDeviceTypeBuiltInDualCamera) {
+        deviceType = FCPPlatformAVCaptureDeviceTypeBuiltInDualCamera;
+      } else if ([device deviceType] == AVCaptureDeviceTypeBuiltInTrueDepthCamera) {
+        deviceType = FCPPlatformAVCaptureDeviceTypeBuiltInTrueDepthCamera;
+      } else if (@available(iOS 13.0, *)) {
+        if ([device deviceType] == AVCaptureDeviceTypeBuiltInUltraWideCamera) {
+          deviceType = FCPPlatformAVCaptureDeviceTypeBuiltInUltraWideCamera;
+        } else if ([device deviceType] == AVCaptureDeviceTypeBuiltInDualWideCamera) {
+          deviceType = FCPPlatformAVCaptureDeviceTypeBuiltInDualWideCamera;
+        } else if ([device deviceType] == AVCaptureDeviceTypeBuiltInTripleCamera) {
+          deviceType = FCPPlatformAVCaptureDeviceTypeBuiltInTripleCamera;
+        } else if (@available(iOS 15.4, *)) {
+          if ([device deviceType] == AVCaptureDeviceTypeBuiltInLiDARDepthCamera) {
+            deviceType = FCPPlatformAVCaptureDeviceTypeBuiltInLiDARDepthCamera;
+          } else if (@available(iOS 17.0, *)) {
+            if ([device deviceType] == AVCaptureDeviceTypeContinuityCamera) {
+              deviceType = FCPPlatformAVCaptureDeviceTypeContinuityCamera;
+            } else if ([device deviceType] == AVCaptureDeviceTypeExternal) {
+              deviceType = FCPPlatformAVCaptureDeviceTypeExternal;
+            }
+          }
+        }
+      }
+      [reply addObject:[FCPPlatformAVCameraDescription makeWithName:device.uniqueID
+                                                      lensDirection:lensFacing
+                                                         deviceType:deviceType]];
     }
     completion(reply, nil);
   });
