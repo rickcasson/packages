@@ -40,18 +40,18 @@ class MockCameraApi extends _i1.Mock implements _i2.CameraApi {
       ) as String);
 
   @override
-  _i4.Future<List<_i2.PlatformCameraDescription>> getAvailableCameras() =>
+  _i4.Future<List<_i2.PlatformAVCameraDescription>> getAvailableCameras() =>
       (super.noSuchMethod(
         Invocation.method(
           #getAvailableCameras,
           [],
         ),
-        returnValue: _i4.Future<List<_i2.PlatformCameraDescription>>.value(
-            <_i2.PlatformCameraDescription>[]),
+        returnValue: _i4.Future<List<_i2.PlatformAVCameraDescription>>.value(
+            <_i2.PlatformAVCameraDescription>[]),
         returnValueForMissingStub:
-            _i4.Future<List<_i2.PlatformCameraDescription>>.value(
-                <_i2.PlatformCameraDescription>[]),
-      ) as _i4.Future<List<_i2.PlatformCameraDescription>>);
+            _i4.Future<List<_i2.PlatformAVCameraDescription>>.value(
+                <_i2.PlatformAVCameraDescription>[]),
+      ) as _i4.Future<List<_i2.PlatformAVCameraDescription>>);
 
   @override
   _i4.Future<int> create(

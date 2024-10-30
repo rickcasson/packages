@@ -5,13 +5,13 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:camera_avfoundation/camera_avfoundation.dart';
 import 'package:camera_platform_interface/camera_platform_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stream_transform/stream_transform.dart';
 
+import '../camera_avfoundation.dart';
 import 'messages.g.dart';
 import 'type_conversion.dart';
 import 'utils.dart';

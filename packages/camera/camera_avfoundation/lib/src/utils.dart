@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:camera_avfoundation/camera_avfoundation.dart';
 import 'package:camera_platform_interface/camera_platform_interface.dart';
 import 'package:flutter/services.dart';
 
+import '../camera_avfoundation.dart';
 import 'messages.g.dart';
 
 /// Creates a [AVCameraDescription] from a Pigeon [PlatformCameraDescription].
