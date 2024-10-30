@@ -69,8 +69,6 @@ class AVFoundationCamera extends CameraPlatform {
   Future<List<AVCameraDescription>> availableCameras() async {
     try {
       return (await _hostApi.getAvailableCameras())
-          // See comment in messages.dart for why this is safe.
-          .map((PlatformAVCameraDescription? c) => c!)
           .map(cameraDescriptionFromPlatform)
           .toList();
     } on PlatformException catch (e) {
